@@ -32,8 +32,6 @@ def get_tickers(desired_chart_pattern):
     response = scraper.get(finviz_url + curr_chart_pattern)
     html = response.content
     soup = BeautifulSoup(html, "html.parser")
-    with open("finviz.html", "w") as f:
-        f.write(str(soup.getText))
 
     ticker_elements = soup.find_all("span")
     ticker_elements = [str(element).split('&lt;b&gt;')[1].split(';')[0] for element in ticker_elements if element.text == " "]
