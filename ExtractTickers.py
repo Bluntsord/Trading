@@ -25,8 +25,11 @@ def get_tickers(desired_chart_pattern):
     with open("finviz_chart_patterns.yaml", "r") as stream:
         chart_patterns = yaml.safe_load(stream)
 
-    curr_chart_pattern = chart_patterns[desired_chart_pattern]
-
+    try:
+        curr_chart_pattern = chart_patterns[desired_chart_pattern]
+    except Exception as e:
+        print("Chart pattern not found")
+        return None
 
     scraper = cloudscraper.create_scraper()
     response = scraper.get(finviz_url + curr_chart_pattern)
@@ -74,6 +77,4 @@ def get_tickers(desired_chart_pattern):
             company_tickers.append(ticker)
 
     return company_tickers
-
-get_tickers("Bullish Engulfing")
 

@@ -2,3 +2,6 @@
 secrets.yml
 public_key.pem
 private_key.pem
+__pycache__/
+*.pyc
+__pycache__
