@@ -32,12 +32,17 @@ class Test:
 
         threading.Thread(target=run).start()
 
-    def execute(self, base_url, params, headers=None):
+    def execute(self, function, base_url, params, headers=None):
         while self.queue.empty():
             time.sleep(1)
         key = self.get_key()
         params['apikey'] = key
-        response = requests.get(base_url, params=params, headers=headers)
+
+        if headers:
+            response = function(base_url, params, headers)
+        else:
+            response = function(base_url, params)
+
         print("response: ", response)
         threading.Thread(self.add_key_back_to_queue(key)).start()
         return response
@@ -50,4 +55,5 @@ params = {
 }
 
 for i in range(12):
-    test.execute(base_url, params)
+    test.execute(lambda x, y: requests.get(x, y), base_url, params)
+
